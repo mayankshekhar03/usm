@@ -1,37 +1,23 @@
-// server.js
-// where your node app starts
-
-// init project
 var express = require('express');
-var app = express();
+var exphbs  = require('express-handlebars');
+var path    = require('path');
+const bodyParser = require('body-parser');
 
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
-
-// http://expressjs.com/en/starter/static-files.html
+var app     = express();
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
-});
+app.engine('handlebars', exphbs({defaultLayout: 'main'})); 
+app.set('view engine', 'handlebars');
 
-app.get("/dreams", function (request, response) {
-  response.send(dreams);
-});
 
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
-});
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
-// Simple in-memory store for now
-var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
+app.get('/', function(req, res){
+  res.render('home');
+});
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
