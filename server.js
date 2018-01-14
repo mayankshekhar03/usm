@@ -36,6 +36,7 @@ app.use(bodyParser.json());
 
 app.get('/', function(req, res){
   res.render('home');
+  console.log(req.query.longurl); //url to be shortened
 });
 
 // listen for requests :)
