@@ -40,7 +40,8 @@ app.get('/', function(req, res){
     console.log(req.query.longurl); //url to be shortened
     var lu = req.query.longurl;
     res.render('home');
-    console.log(database);
+    var urls = database.collection('urls');
+    console.log(urls);
   }
 });
 
