@@ -16,7 +16,7 @@ new mongodb('mongodb://ds251807.mlab.com:51807/usm', {
     (err, db) => {
       if (err) return console.error(err);
       console.log('Database connected');
-      database = db.db('foo'); 
+      database = db.db('usm'); 
 });
 //~database connection 
 
@@ -35,8 +35,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.get('/', function(req, res){
-  res.render('home');
-  console.log(req.query.longurl); //url to be shortened
+  if(req.query.longurl == undefined) res.render('home');
+  else{
+    console.log(req.query.longurl); //url to be shortened
+    var lu = req.query.longurl;
+    res.render('home');
+    console.log(database);
+  }
 });
 
 // listen for requests :)
