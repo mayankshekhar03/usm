@@ -9,8 +9,8 @@ var database;
 
 new mongodb('mongodb://ds251807.mlab.com:51807/usm', {
     auth: {
-       user: 'mayankshekhar03',
-       password: 'sharda#1',
+       user: process.env.DB_USER,
+       password: process.env.DB_PASS,
     }
 }).connect(
     (err, db) => {
