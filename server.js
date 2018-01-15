@@ -52,13 +52,24 @@ app.get('/', function(req, res){
         if(err) throw err;
       });
       res.send("Long URL: "+obj.lu+"\nShort URL: usm.glitch.me/"+obj.su);
+      database.close();
       });
   }
 });
 
 //HANDLING REQUEST TO SHORT URLS
 app.get('/:su', function(req, res){
-  console.log(res.param.su);
+  console.log(req.params.su);
+  var su = req.params.su;
+  var urls = database.collection('urls');
+  urls.find({
+            su: { $eq: +su }
+        }).toArray(function(err, docs){
+            if(err) throw err;
+            console.log(docs);
+            database.close();
+        });
+  res.send("Hello!");
 });
 
 // listen for requests :)
