@@ -65,9 +65,13 @@ app.get('/:su', function(req, res){
       su: { $eq: +su }
   }).toArray(function(err, docs){
       if(err){
-        res.send("<h1>No such short url exists!");
+        res.send("<p>No such short url exists!</p>");
       }else{
-        res.redirect(docs[0].lu);
+        if(docs.length != 0){
+          res.redirect(docs[0].lu);
+        }else{
+          res.send("<p>No such short url exists!</p>");
+        }
       }
   });
 });
