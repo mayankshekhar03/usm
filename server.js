@@ -40,27 +40,21 @@ app.get('/', function(req, res){
     console.log(req.query.longurl); //url to be shortened
     var lu = req.query.longurl;
     var urls = database.collection('urls');
-    var mm = urls.aggregate([ 
-        { "$group": { 
-            "_id": null,
-            "max": { "$max": "$su" }, 
-            "min": { "$min": "$su" } 
-        }}
-    ])
     var count=0;
     urls.find().toArray(function(err, docs){
       if(err) throw err;
       for(var i = 0;i<docs.length;i++){
+        console.log(docs[i].su+" "+count);
         if(count<(docs[i].su+0)){count = docs[i].su+0;}
       }
-    });
-    console.log(count);
-    var obj  = {lu: lu, su: count++};
-    urls.insert(obj, function(err, res){
-      if(err) throw err;
-      console.log(JSON.stringify(obj));
-    });
-    res.send("Long URL: "+obj.lu+"\nShort URL: usm.glitch.me/"+obj.su);
+      var obj  = {lu: lu, su: count++};
+      console.log(count);
+      urls.insert(obj, function(err, res){
+        if(err) throw err;
+        console.log(JSON.stringify(obj));
+      });
+      res.send("Long URL: "+obj.lu+"\nShort URL: usm.glitch.me/"+obj.su);
+      });
   }
 });
 
