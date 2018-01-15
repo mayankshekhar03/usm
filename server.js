@@ -64,8 +64,11 @@ app.get('/:su', function(req, res){
   urls.find({
       su: { $eq: +su }
   }).toArray(function(err, docs){
-      if(err) throw err;
-      res.redirect(docs[0].lu);
+      if(err){
+        res.send("<h1>No such short url exists!");
+      }else{
+        res.redirect(docs[0].lu);
+      }
   });
 });
 
