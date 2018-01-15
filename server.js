@@ -34,6 +34,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+//HANDLING NEW LONG URLS
 app.get('/', function(req, res){
   if(req.query.longurl == undefined) res.render('home');
   else{
@@ -44,18 +45,20 @@ app.get('/', function(req, res){
     urls.find().toArray(function(err, docs){
       if(err) throw err;
       for(var i = 0;i<docs.length;i++){
-        console.log(docs[i].su+" "+count);
         if(count<(docs[i].su+0)){count = docs[i].su+0;}
       }
-      var obj  = {lu: lu, su: count++};
-      console.log(count);
+      var obj  = {lu: lu, su: ++count};
       urls.insert(obj, function(err, res){
         if(err) throw err;
-        console.log(JSON.stringify(obj));
       });
       res.send("Long URL: "+obj.lu+"\nShort URL: usm.glitch.me/"+obj.su);
       });
   }
+});
+
+//HANDLING REQUEST TO SHORT URLS
+app.get('/:su', function(req, res){
+  console.log(res.param.su);
 });
 
 // listen for requests :)
