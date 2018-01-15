@@ -51,7 +51,8 @@ app.get('/', function(req, res){
       urls.insert(obj, function(err, res){
         if(err) throw err;
       });
-      res.send("Long URL: "+obj.lu+"\nShort URL: usm.glitch.me/"+obj.su);
+      var apiobj = {long_url: obj.lu, short_url: "usm.glitch.me/"+obj.su};
+      res.send(apiobj);
       });
   }
 });
