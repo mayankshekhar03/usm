@@ -47,7 +47,7 @@ app.get('/', function(req, res){
             "min": { "$min": "$su" } 
         }}
     ])
-    var count
+    var count = urls.find().toArray(function(){});
     console.log(count);
     var obj  = {lu: lu, su: count++};
     urls.insert(obj, function(err, res){
