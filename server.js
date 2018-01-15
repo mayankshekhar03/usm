@@ -6,7 +6,6 @@ var mongodb = require('mongodb').MongoClient;
 
 //database connection
 var database;
-var count = 0;
 
 new mongodb('mongodb://ds251807.mlab.com:51807/usm', {
     auth: {
@@ -41,6 +40,15 @@ app.get('/', function(req, res){
     console.log(req.query.longurl); //url to be shortened
     var lu = req.query.longurl;
     var urls = database.collection('urls');
+    var mm = urls.aggregate([ 
+        { "$group": { 
+            "_id": null,
+            "max": { "$max": "$su" }, 
+            "min": { "$min": "$su" } 
+        }}
+    ])
+    var count
+    console.log(count);
     var obj  = {lu: lu, su: count++};
     urls.insert(obj, function(err, res){
       if(err) throw err;
