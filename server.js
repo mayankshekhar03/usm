@@ -60,6 +60,17 @@ app.get('/', function(req, res){
 //HANDLING REQUEST TO SHORT URLS
 app.get('/:su', function(req, res){
   var su = req.params.su;
+  new mongodb('mongodb://ds251807.mlab.com:51807/usm', {
+      auth: {
+         user: process.env.DB_USER,
+         password: process.env.DB_PASS,
+      }
+  }).connect(
+      (err, db) => {
+        if (err) return console.error(err);
+        console.log('Database connected');
+        database = db.db('usm'); 
+  });
   var urls = database.collection('urls');
   urls.find({
       su: { $eq: +su }
