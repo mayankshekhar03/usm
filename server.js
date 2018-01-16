@@ -6,6 +6,7 @@ var mongodb = require('mongodb').MongoClient;
 
 //database connection
 var database;
+var urls;
 
 new mongodb('mongodb://ds251807.mlab.com:51807/usm', {
     auth: {
@@ -17,6 +18,7 @@ new mongodb('mongodb://ds251807.mlab.com:51807/usm', {
       if (err) return console.error(err);
       console.log('Database connected');
       database = db.db('usm'); 
+      urls = database.collection('urls');
 });
 //~database connection 
 
@@ -40,7 +42,6 @@ app.get('/', function(req, res){
   else{
     console.log(req.query.longurl); //url to be shortened
     var lu = req.query.longurl;
-    var urls = database.collection('urls');
     var count=0;
     urls.find().toArray(function(err, docs){
       if(err) throw err;
@@ -60,18 +61,6 @@ app.get('/', function(req, res){
 //HANDLING REQUEST TO SHORT URLS
 app.get('/:su', function(req, res){
   var su = req.params.su;
-  new mongodb('mongodb://ds251807.mlab.com:51807/usm', {
-      auth: {
-         user: process.env.DB_USER,
-         password: process.env.DB_PASS,
-      }
-  }).connect(
-      (err, db) => {
-        if (err) return console.error(err);
-        console.log('Database connected');
-        database = db.db('usm'); 
-  });
-  var urls = database.collection('urls');
   urls.find({
       su: { $eq: +su }
   }).toArray(function(err, docs){
